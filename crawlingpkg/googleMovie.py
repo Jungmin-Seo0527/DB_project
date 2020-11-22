@@ -4,6 +4,7 @@ import sqlite3
 from selenium import webdriver
 import time
 
+
 def getGoogleMovieList():
     # 크롬창의 띄우지 않고 백그라운드로 실행해서 스크롤을 내려 아래에 있는 정보 로딩
     options = webdriver.ChromeOptions()
@@ -21,9 +22,11 @@ def getGoogleMovieList():
     interval = 2
     prev_height = browser.execute_script("return document.body.scrollHeight")
     while True:
-        browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+        browser.execute_script(
+            "window.scrollTo(0, document.body.scrollHeight)")
         time.sleep(interval)  # 스크롤 내리고 로딩 시간 임의로 2초로 함
-        cur_height = browser.execute_script("return document.body.scrollHeight")
+        cur_height = browser.execute_script(
+            "return document.body.scrollHeight")
         if cur_height == prev_height:
             break
         prev_height = cur_height
@@ -54,17 +57,20 @@ def getGoogleMovieList():
         if genre:
             genre = genre.get_text()
         else:
-            genre = "NULL" 
+            genre = "NULL"
         # rate 우선 보류
-        rate = movie.find("div", attrs={"role": "img"})  # 별점 5개 만점에 4.4개를 받았습니다. -> 4.4만 추출...
+        # 별점 5개 만점에 4.4개를 받았습니다. -> 4.4만 추출...
+        rate = movie.find("div", attrs={"role": "img"})
         if rate:
             rate = rate["aria-label"]
         else:
             rate = "NULL"
-        price = movie.find("span", attrs={"class": "VfPpfd ZdBevf i5DZme"}).get_text()
+        price = movie.find(
+            "span", attrs={"class": "VfPpfd ZdBevf i5DZme"}).get_text()
         link = movie.find("a", attrs={"class": "JC71ub"})["href"]
 
-        conn.execute("insert into google_movies values (?, ?, ?, ?, ?)", (title, genre, rate, price, link))
+        conn.execute("insert into google_movies values (?, ?, ?, ?, ?)",
+                     (title, genre, rate, price, link))
 
     conn.commit()
     conn.close()
