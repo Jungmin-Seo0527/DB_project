@@ -39,7 +39,7 @@ def getGoogleMovieList():
     cur = conn.cursor()
 
     conn.executescript("""drop table if exists google_movies;
-    create table google_movies(title text, genre text, rate text, price text, url text);
+    create table google_movies(rank int, title text, genre text, rate text, price text, url text);
     """)
 
     conn.commit()
@@ -50,7 +50,8 @@ def getGoogleMovieList():
     movies = soup.find_all("div", attrs={"class": "Vpfmgd"})
 
     # title, price, rate, genre, url
-    for movie in movies:
+    for index, movie in enumerate(movies):
+        ranking = index+1
         title = movie.find("div", attrs={"class": "WsMG1c nnK0zc"}).get_text()
         genre = movie.find("div", attrs={"class": "KoLSrc"})
         # 장르가 표기되지 않은 것이 있음
@@ -68,10 +69,14 @@ def getGoogleMovieList():
         price = movie.find(
             "span", attrs={"class": "VfPpfd ZdBevf i5DZme"}).get_text()
         link = movie.find("a", attrs={"class": "JC71ub"})["href"]
-
-        conn.execute("insert into google_movies values (?, ?, ?, ?, ?)",
-                     (title, genre, rate, price, link))
+        link_head = "https://play.google.com"
+        conn.execute("insert into google_movies values (?, ?, ?, ?, ?, ?)",
+                     (ranking, title, genre, rate, price, link_head+link))
 
     conn.commit()
     conn.close()
     print("google movie!!!!!!!!!!!!!!!!!!!!!!")
+
+
+if __name__ == "__main__":
+    getGoogleMovieList()

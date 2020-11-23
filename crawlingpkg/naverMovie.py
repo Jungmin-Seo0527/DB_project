@@ -14,12 +14,12 @@ def getNaverMovieList():
     filepath = "naver_movies.db"
     conn = sqlite3.connect(filepath)
     cur = conn.cursor()
-    conn.executescript("""drop table if exists google_movies;
-    create table google_movies(title text, genre text, rate text, price text, url text);
+    conn.executescript("""drop table if exists naver_movies;
+    create table naver_movies(rank int, title text, genre text, rate text, price text, url text);
     """)
 
     conn.commit()
-
+    rank = 0
     for page in range(1, 6):
         url = "https://serieson.naver.com/movie/top100List.nhn?page={}&rankingTypeCode=PC_D".format(
             page)
@@ -54,7 +54,7 @@ def getNaverMovieList():
 
             # link
             link = movie.find("a", attrs={"class": "NPI=a:dcontent"})["href"]
-            link_head = "https://serieson.naver.com/"
+            link_head = "https://serieson.naver.com"
 
             # genre
             # 19세는 url을 타고 들어가면 19게 인증을 해야 하기 때문에
@@ -70,11 +70,15 @@ def getNaverMovieList():
             else:
                 genre = "19"
 
-            conn.execute("insert into google_movies values (?, ?, ?, ?, ?)",
-                         (title, genre, rate, price, link))
-
+            rank = rank+1
+            conn.execute("insert into naver_movies values (?, ?, ?, ?, ?, ?)",
+                         (rank, title, genre, rate, price, link_head+link))
             # print(
             #     f"title: {title} / price: {price} / rate: {rate} / link : {link_head+link} / genre : {genre}")
     print("naver_movie_list->DB done!!!")
     conn.commit()
     conn.close()
+
+
+if __name__ == "__main__":
+    getNaverMovieList()
