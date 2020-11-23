@@ -34,7 +34,7 @@ def getGoogleMovieList():
     browser.get_screenshot_as_file("google_movie_test.png")
 
     # db 만들기
-    filepath = "google_movies.db"
+    filepath = "movie.db"
     conn = sqlite3.connect(filepath)
     cur = conn.cursor()
 

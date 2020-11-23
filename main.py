@@ -16,15 +16,11 @@ app.debug = True
 @app.route("/")
 def mainpage():
     # getGoogleMovieList()
-    db = sqlite3.connect('google_movies.db')
+    db = sqlite3.connect('movie.db')
     db.row_factory = sqlite3.Row
     google_movies = db.execute(
         'select title from google_movies'
     ).fetchall()
-    db.close()
-
-    db = sqlite3.connect('naver_movies.db')
-    db.row_factory = sqlite3.Row
     naver_movies = db.execute(
         'select title from naver_movies'
     ).fetchall()
@@ -35,19 +31,18 @@ def mainpage():
 # platform -> 1=google, 2=naver
 @app.route("/<int:platform>/<string:title>")
 def showAboutMovie(platform, title):
-    db_name = ""
     if platform == 1:
-        db_name = "google_movies.db"
         table = "google_movies"
     else:
-        db_name = "naver_movies.db"
         table = "naver_movies"
 
-    db = sqlite3.connect(db_name)
+    db = sqlite3.connect("movie.db")
     db.row_factory = sqlite3.Row
+
     movie = db.execute(
         f'select * from {table} where title=?', (title,)
     ).fetchall()
+    db.close()
     return render_template("showAboutMovie.html", movie=movie)
 
 

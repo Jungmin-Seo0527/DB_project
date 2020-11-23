@@ -11,7 +11,7 @@ import time
 def getNaverMovieList():
 
     # db 만들기
-    filepath = "naver_movies.db"
+    filepath = "movie.db"
     conn = sqlite3.connect(filepath)
     cur = conn.cursor()
     conn.executescript("""drop table if exists naver_movies;
