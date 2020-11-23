@@ -8,6 +8,7 @@
 <body>
     <div style="width:350px; height:5000px; border:1px solid red; float:left;">
         <h4>google movie list</h4>
+        <a href={{url_for('reset', platform=1)}}>새로고침</a>
         <ul>
             {% for movie in google_movies %}
             <li>
@@ -19,6 +20,7 @@
 
      <div style="width:350px; height:5000px; border:1px solid green; float:left;">
         <h4>naver movie list</h4>
+        <a href={{url_for('reset', platform=2)}}>새로고침</a>
         <ul>
             {% for movie in naver_movies %}
             <li>

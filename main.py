@@ -8,6 +8,7 @@ import time
 from hello import hello
 from crawlingpkg.googleMovie import getGoogleMovieList
 from crawlingpkg.naverMovie import getNaverMovieList
+from crawlingpkg.test import ggg
 
 app = Flask(__name__)
 app.debug = True
@@ -25,10 +26,21 @@ def mainpage():
         'select title from naver_movies'
     ).fetchall()
     db.close()
+
     return render_template('mainPage_test.html', google_movies=google_movies, naver_movies=naver_movies)
 
 
+@app.route("/<int:platform>_reset")
+def reset(platform):
+    if platform == 1:
+        getGoogleMovieList()
+    else:
+        getNaverMovieList()
+    return render_template("resetPage.html")
+
 # platform -> 1=google, 2=naver
+
+
 @app.route("/<int:platform>/<string:title>")
 def showAboutMovie(platform, title):
     if platform == 1:
