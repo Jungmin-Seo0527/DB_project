@@ -78,7 +78,3 @@ def getNaverMovieList():
     print("naver_movie_list->DB done!!!")
     conn.commit()
     conn.close()
-
-
-if __name__ == "__main__":
-    getNaverMovieList()
