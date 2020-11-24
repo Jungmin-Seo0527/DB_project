@@ -26,6 +26,7 @@ def mainpage():
     google_movies = db.execute(sql).fetchall()
 
     table = 'naver_movies'
+    sql = f'select title from {table}'
     naver_movies = db.execute(sql).fetchall()
     db.close()
 
