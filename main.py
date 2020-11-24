@@ -5,7 +5,6 @@ import sqlite3
 from selenium import webdriver
 import time
 
-from hello import hello
 from crawlingpkg.googleMovie import getGoogleMovieList
 from crawlingpkg.naverMovie import getNaverMovieList
 from crawlingpkg.test import ggg
@@ -19,12 +18,14 @@ def mainpage():
     # getGoogleMovieList()
     db = sqlite3.connect('movie.db')
     db.row_factory = sqlite3.Row
-    google_movies = db.execute(
-        'select title from google_movies'
-    ).fetchall()
-    naver_movies = db.execute(
-        'select title from naver_movies'
-    ).fetchall()
+    table = ''
+
+    table = 'google_movies'
+    sql = f'select title from {table}'
+    google_movies = db.execute(sql).fetchall()
+
+    table = 'naver_movies'
+    naver_movies = db.execute(sql).fetchall()
     db.close()
 
     return render_template('mainPage_test.html', google_movies=google_movies, naver_movies=naver_movies)
@@ -38,22 +39,20 @@ def reset(platform):
         getNaverMovieList()
     return render_template("resetPage.html")
 
+
 # platform -> 1=google, 2=naver
-
-
 @app.route("/<int:platform>/<string:title>")
 def showAboutMovie(platform, title):
-    if platform == 1:
-        table = "google_movies"
-    else:
-        table = "naver_movies"
-
     db = sqlite3.connect("movie.db")
     db.row_factory = sqlite3.Row
+    sql = ''
 
-    movie = db.execute(
-        f'select * from {table} where title=?', (title,)
-    ).fetchall()
+    sql = 'select title from platform where id=?'
+    table = db.execute(sql, (platform,)).fetchall()[0]['title']
+
+    sql = f'select * from {table} where title=?'
+    movie = db.execute(sql, (title,)).fetchall()
+
     db.close()
     return render_template("showAboutMovie.html", movie=movie)
 
