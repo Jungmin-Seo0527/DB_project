@@ -6,12 +6,15 @@
     <title>Hello</title>
 </head>
 <body>
-    <h1>{{movie[0].title}}</h1>
+
+    {% for m in movie %}
+    <h3>{{m.title}}</h3>
     <ul>
-        {{movie[0].price}}<br>
-        {{movie[0].genre}}<br>
-        {{movie[0].rate}}<br>
-        <a href={{movie[0].url}}>{{movie[0].url}}</a>
+        {{m.price}}<br>
+        {{m.genre}}<br>
+        {{m.rate}}<br>
+        <a href={{m.url}}>{{m.url}}</a>
     </ul>
+    {% endfor %}
 </body>
 </html>

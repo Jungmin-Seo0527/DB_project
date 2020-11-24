@@ -1,4 +1,5 @@
 # -*- coding: euc-kr -*-
+# 검색
 from flask import Flask, render_template
 import requests
 from bs4 import BeautifulStoneSoup
@@ -17,12 +18,15 @@ google_movies = db.execute(
     'select title from google_movies'
 ).fetchall()
 
-temp_title="검객"
+temp_title = "해리포터"
 
-sql='select title from google_movies where title=?'
+# 띄어쓰기 배제하고
+#sql=f'select title from naver_movies where (replace(title, " ", "") like "%{temp_title}%")'
 
-f=db.execute(sql, (temp_title, )).fetchall()
-print(type(f[0]))
-print(f[0]['title'])
+sql = f'select title from naver_movies, google_movies where (replace(title, " ", "") like replace("%{temp_title}%", " ", ""))'
+
+f = db.execute(sql).fetchall()
+for m in f:
+    print(m['title'])
 
 db.close()

@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+# -*- coding: euc-kr -*-
+from flask import Flask, render_template, request, redirect
 import requests
 from bs4 import BeautifulStoneSoup
 import sqlite3
@@ -55,6 +56,26 @@ def showAboutMovie(platform, title):
 
     db.close()
     return render_template("showAboutMovie.html", movie=movie)
+
+
+@app.route("/search/", methods=['GET', 'POST'])
+def search():
+    db = sqlite3.connect('movie.db')
+    db.row_factory = sqlite3.Row
+
+    # post
+    if request.method == 'POST':
+        title = request.form['movie_title']
+        sql = f'select * from naver_movies where (replace(title, " ", "") like replace("%{title}%", " ", ""))'
+        movies = db.execute(sql).fetchall()
+        for movie in movies:
+            print(movie["title"])
+            print(movie["price"])
+        return render_template("showAboutMovie.html", movie=movies)
+
+    # get
+    else:
+        return render_template("searchMovie.html")
 
 
 if __name__ == "__main__":
