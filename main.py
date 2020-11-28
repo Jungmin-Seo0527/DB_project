@@ -1,5 +1,5 @@
 # -*- coding: euc-kr -*-
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import requests
 from bs4 import BeautifulStoneSoup
 import sqlite3
@@ -56,7 +56,7 @@ def showAboutMovie(platform, title):
     movie = db.execute(sql, (title,)).fetchall()
 
     db.close()
-    return render_template("showAboutMovie.html", movie=movie)
+    return render_template("showAboutMovie.html", movie=movie, platform=platform)
 
 
 @app.route("/search/", methods=['GET', 'POST'])
@@ -77,6 +77,29 @@ def search():
     # get
     else:
         return render_template("searchMovie.html")
+
+# plus my list
+@app.route("/<int:platform><string:title>/editList/", methods=['GET', 'POST'])
+def editMyList(title, platform):
+    db=sqlite3.connect('movie.db')
+    db.row_factory=sqlite3.Row
+
+    if request.method=='POST':
+        sql="insert into myList values (?, ?, ?, ?, ?)"
+        print(request.form["comment"])
+
+        db.execute(sql, (request.form['id'], request.form['platform'], request.form['title'], request.form['myRate'], request.form['comment']))
+        db.commit()
+        db.close()
+        return redirect(url_for('showAboutMovie', platform=platform, title=title))
+    else:
+        return render_template('editMyList.html', title=title, platform=platform)
+        
+# show and edit myList
+@app.route("/showMyList/")
+def showMyList():
+    pass
+
 
 
 if __name__ == "__main__":
