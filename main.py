@@ -55,8 +55,12 @@ def showAboutMovie(platform, title):
     sql = f'select * from {table} where title=?'
     movie = db.execute(sql, (title,)).fetchall()
 
+    sql='select * from myList where title=?'
+    myComment=db.execute(sql, (title,)).fetchall()
+
     db.close()
-    return render_template("showAboutMovie.html", movie=movie, platform=platform)
+    return render_template("showAboutMovie.html", movie=movie, platform=platform, myComment=myComment)
+
 
 
 @app.route("/search/", methods=['GET', 'POST'])

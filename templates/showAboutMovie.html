@@ -13,7 +13,16 @@
         {{m.genre}}<br>
         {{m.rate}}<br>
         <a href={{m.url}}>바로가기</a><br>
-        <a href={{url_for('editMyList', platform=platform, title=m.title)}}>내 리스트 추가</a>
+
+        {% if myComment %}
+        <h4>내 평점</h4>
+            <ul>
+                {{myComment[0].myRate}}<br>
+                {{myComment[0].comment}}<br>
+            </ul>
+        {% else %}
+            <a href={{url_for('editMyList', platform=platform, title=m.title)}}>내 리스트 추가</a>
+        {% endif %}
     </ul>
     {% endfor %}
 </body>
