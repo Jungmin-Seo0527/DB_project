@@ -9,16 +9,15 @@
     {% for m in movie %}
     <h3>{{m.title}}</h3>
     <ul>
-        {{m.price}}<br>
-        {{m.genre}}<br>
-        {{m.rate}}<br>
-        <a href={{m.url}}>바로가기</a><br>
+        가격: {{m.price}}<br>
+        장르: {{m.genre}}<br>
+        평점: {{m.rate}}<br>
+        <a href={{m.url}}>바로가기</a><br><br>
 
         {% if myComment %}
-        <h4>내 평점</h4>
             <ul>
-                {{myComment[0].myRate}}<br>
-                {{myComment[0].comment}}<br>
+                내 평점: {{myComment[0].myRate}}<br>
+                내 의견: {{myComment[0].comment}}<br>
             </ul>
         {% else %}
             <a href={{url_for('editMyList', platform=platform, title=m.title)}}>내 리스트 추가</a>

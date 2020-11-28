@@ -62,7 +62,6 @@ def showAboutMovie(platform, title):
     return render_template("showAboutMovie.html", movie=movie, platform=platform, myComment=myComment)
 
 
-
 @app.route("/search/", methods=['GET', 'POST'])
 def search():
     db = sqlite3.connect('movie.db')
