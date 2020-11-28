@@ -67,12 +67,12 @@ def search():
     # post
     if request.method == 'POST':
         title = request.form['movie_title']
+        sql = f'select * from google_movies where (replace(title, " ", "") like replace("%{title}%", " ", ""))'
+        google_movies = db.execute(sql).fetchall()
+
         sql = f'select * from naver_movies where (replace(title, " ", "") like replace("%{title}%", " ", ""))'
-        movies = db.execute(sql).fetchall()
-        for movie in movies:
-            print(movie["title"])
-            print(movie["price"])
-        return render_template("showAboutMovie.html", movie=movies)
+        naver_movies = db.execute(sql).fetchall()
+        return render_template("showSearchedMovies.html", google_movies=google_movies, naver_movies=naver_movies)
 
     # get
     else:

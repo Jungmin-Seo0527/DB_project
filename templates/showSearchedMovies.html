@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="width:350px; height:5000px; border:1px solid red; float:left;">
+        <h4>google movie list</h4>
+        <ul>
+            {% for movie in google_movies %}
+            <li>
+                {{movie.title}}<br>
+                {{movie.price}}<br>
+                <a href={{movie.url}}>바로가기</a>
+            </li>
+            {% endfor %}
+         </ul>
+     </div>
+
+     <div style="width:350px; height:5000px; border:1px solid green; float:left;">
+        <h4>naver movie list</h4>
+        <ul>
+            {% for movie in naver_movies %}
+            <li>
+                {{movie.title}}<br>
+                {{movie.price}}<br>
+                <a href={{movie.url}}>바로가기</a>
+            </li>
+            {% endfor %}
+         </ul>
+     </div>
+</body>
+</html>
