@@ -39,7 +39,7 @@ def getGoogleMovieList():
     cur = conn.cursor()
 
     conn.executescript("""drop table if exists google_movies;
-    create table google_movies(rank int, title text, genre text, rate text, price text, url text);
+    create table google_movies(rank int, title text, genre text, rate real, price text, url text);
     """)
 
     conn.commit()
@@ -64,8 +64,11 @@ def getGoogleMovieList():
         rate = movie.find("div", attrs={"role": "img"})
         if rate:
             rate = rate["aria-label"]
+            temp=rate[10]+rate[11]+rate[12]
+            temp=float(temp)*2
+            rate=temp
         else:
-            rate = "NULL"
+            rate = -1
         price = movie.find(
             "span", attrs={"class": "VfPpfd ZdBevf i5DZme"}).get_text()
         link = movie.find("a", attrs={"class": "JC71ub"})["href"]

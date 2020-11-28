@@ -23,10 +23,15 @@ temp_title = "해리포터"
 # 띄어쓰기 배제하고
 #sql=f'select title from naver_movies where (replace(title, " ", "") like "%{temp_title}%")'
 
-sql = f'select title from naver_movies, google_movies where (replace(title, " ", "") like replace("%{temp_title}%", " ", ""))'
+sql = f'select * from google_movies where (replace(title, " ", "") like replace("%{temp_title}%", " ", ""))'
 
 f = db.execute(sql).fetchall()
 for m in f:
     print(m['title'])
+    print(m['rate'][10]+m['rate'][11]+m['rate'][12])
+    temp=m['rate'][10]+m['rate'][11]+m['rate'][12]
+    temp=float(temp)*2
+    print(type(temp))
+    print(temp)
 
 db.close()

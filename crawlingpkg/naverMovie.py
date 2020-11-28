@@ -15,7 +15,7 @@ def getNaverMovieList():
     conn = sqlite3.connect(filepath)
     cur = conn.cursor()
     conn.executescript("""drop table if exists naver_movies;
-    create table naver_movies(rank int, title text, genre text, rate text, price text, url text);
+    create table naver_movies(rank int, title text, genre text, rate real, price text, url text);
     """)
 
     conn.commit()
@@ -48,7 +48,7 @@ def getNaverMovieList():
             # rate
             rate = movie.find("em", attrs={"class": "score_num"})
             if rate:
-                rate = rate.get_text()
+                rate = float(rate.get_text())
             else:
                 continue
 
