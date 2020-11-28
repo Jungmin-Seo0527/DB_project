@@ -11,8 +11,10 @@
         <ul>
             {% for movie in google_movies %}
             <li>
-                {{movie.title}}<br>
-                {{movie.price}}<br>
+                랭킹: {{movie.rank}}<br>
+                제목: {{movie.title}}<br>
+                별점: {{movie.rate}}<br>
+                가격: {{movie.price}}<br>
                 <a href={{movie.url}}>바로가기</a>
             </li>
             {% endfor %}
@@ -24,8 +26,10 @@
         <ul>
             {% for movie in naver_movies %}
             <li>
-                {{movie.title}}<br>
-                {{movie.price}}<br>
+                랭킹: {{movie.rank}}<br>
+                제목: {{movie.title}}<br>
+                별점: {{movie.rate}}<br>
+                가격: {{movie.price}}<br>
                 <a href={{movie.url}}>바로가기</a>
             </li>
             {% endfor %}
