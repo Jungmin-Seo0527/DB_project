@@ -6,9 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{{url_for('editMyList', title=title, platform=platform)}}"" method="POST">
+    <form action="{{url_for('editMyList', title=title, platform=platform, id=id)}}"" method="POST">
         <label for='id'>id</label>
-        <input id='id' type='int' name='id'><br>
+        <input id='id' type='int' name='id', value='{{id}}'><br>
 
         <label for='platform'>platform</label>
         <input id='platform' type='int' name='platform', value='{{platform}}'><br>

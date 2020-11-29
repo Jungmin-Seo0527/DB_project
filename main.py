@@ -87,7 +87,10 @@ def editMyList(title, platform):
         return redirect(url_for('showAboutMovie', platform=platform, title=title))
     else:
         # myList(id) ++ 
-        return render_template('editMyList.html', title=title, platform=platform)
+        sql="select max(id) as m from myList"
+        id=db.execute(sql).fetchall()
+        id=id[0]['m']+1
+        return render_template('editMyList.html', title=title, platform=platform, id=id)
         
 # show and edit myList
 @app.route("/<int:platform><string:title>EditMyList/", methods=['GET', 'POST'])
