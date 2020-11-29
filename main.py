@@ -21,15 +21,10 @@ def mainpage():
     db.row_factory = sqlite3.Row
     table = ''
 
-    table = 'google_movies'
-    sql = f'select title from {table}'
-    google_movies = db.execute(sql).fetchall()
-
-    table = 'naver_movies'
-    sql = f'select title from {table}'
-    naver_movies = db.execute(sql).fetchall()
+    sql = f'select title from movies where platform_id=?'
+    google_movies = db.execute(sql, (1,)).fetchall()
+    naver_movies = db.execute(sql, (2,)).fetchall()
     db.close()
-
     return render_template('mainPage_test.html', google_movies=google_movies, naver_movies=naver_movies)
 
 
@@ -49,11 +44,8 @@ def showAboutMovie(platform, title):
     db.row_factory = sqlite3.Row
     sql = ''
 
-    sql = 'select title from platform where id=?'
-    table = db.execute(sql, (platform,)).fetchall()[0]['title']
-
-    sql = f'select * from {table} where title=?'
-    movie = db.execute(sql, (title,)).fetchall()
+    sql = 'select * from movies where platform_id=? and title=?'
+    movie = db.execute(sql, (platform, title)).fetchall()
 
     sql='select * from myList where title=?'
     myComment=db.execute(sql, (title,)).fetchall()
@@ -70,11 +62,10 @@ def search():
     # post
     if request.method == 'POST':
         title = request.form['movie_title']
-        sql = f'select * from google_movies where (replace(title, " ", "") like replace("%{title}%", " ", ""))'
-        google_movies = db.execute(sql).fetchall()
+        sql = f'select * from movies where platform_id=? and (replace(title, " ", "") like replace("%{title}%", " ", ""))'
 
-        sql = f'select * from naver_movies where (replace(title, " ", "") like replace("%{title}%", " ", ""))'
-        naver_movies = db.execute(sql).fetchall()
+        google_movies = db.execute(sql, (1, )).fetchall()
+        naver_movies = db.execute(sql, (2, )).fetchall()
 
         return render_template("showSearchedMovies.html", google_movies=google_movies, naver_movies=naver_movies)
 
@@ -95,6 +86,7 @@ def editMyList(title, platform):
         db.close()
         return redirect(url_for('showAboutMovie', platform=platform, title=title))
     else:
+        # myList(id) ++ 
         return render_template('editMyList.html', title=title, platform=platform)
         
 # show and edit myList
