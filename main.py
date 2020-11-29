@@ -47,8 +47,8 @@ def showAboutMovie(platform, title):
     sql = 'select * from movies where platform_id=? and title=?'
     movie = db.execute(sql, (platform, title)).fetchall()
 
-    sql='select * from myList where title=?'
-    myComment=db.execute(sql, (title,)).fetchall()
+    sql = 'select * from myList where title=?'
+    myComment = db.execute(sql, (title,)).fetchall()
 
     db.close()
     return render_template("showAboutMovie.html", movie=movie, platform=platform, myComment=myComment)
@@ -74,42 +74,51 @@ def search():
         return render_template("searchMovie.html")
 
 # plus my list
+
+
 @app.route("/<int:platform><string:title>/editList/", methods=['GET', 'POST'])
 def editMyList(title, platform):
-    db=sqlite3.connect('movie.db')
-    db.row_factory=sqlite3.Row
+    db = sqlite3.connect('movie.db')
+    db.row_factory = sqlite3.Row
 
-    if request.method=='POST':
-        sql="insert into myList values (?, ?, ?, ?, ?)"
-        db.execute(sql, (request.form['id'], request.form['platform'], request.form['title'], request.form['myRate'], request.form['comment']))
+    if request.method == 'POST':
+        sql = "insert into myList values (?, ?, ?, ?, ?)"
+        db.execute(sql, (request.form['id'], request.form['platform'],
+                         request.form['title'], request.form['myRate'], request.form['comment']))
+
+        sql = "update movies set list_id=? where title=?"
+        db.execute(sql, (request.form['id'],request.form['title']))
+
         db.commit()
         db.close()
         return redirect(url_for('showAboutMovie', platform=platform, title=title))
     else:
-        # myList(id) ++ 
-        sql="select max(id) as m from myList"
-        id=db.execute(sql).fetchall()
-        id=id[0]['m']+1
+        # myList(id) ++
+        sql = "select max(id) as m from myList"
+        id = db.execute(sql).fetchall()
+        id = id[0]['m']+1
         return render_template('editMyList.html', title=title, platform=platform, id=id)
-        
+
 # show and edit myList
+
+
 @app.route("/<int:platform><string:title>EditMyList/", methods=['GET', 'POST'])
 def editList(title, platform):
-    db=sqlite3.connect('movie.db')
-    db.row_factory=sqlite3.Row
+    db = sqlite3.connect('movie.db')
+    db.row_factory = sqlite3.Row
 
-    if request.method=='POST':
-        sql='update myList set id=?, platform=?, title=?, myRate=?, comment=? where title=? and platform=?'
-        db.execute(sql, (request.form['id'], request.form['platform'], request.form['title'], request.form['myRate'], request.form['comment'], title, platform,))
+    if request.method == 'POST':
+        sql = 'update myList set id=?, platform=?, title=?, myRate=?, comment=? where title=? and platform=?'
+        db.execute(sql, (request.form['id'], request.form['platform'], request.form['title'],
+                         request.form['myRate'], request.form['comment'], title, platform,))
         db.commit()
         db.close()
         return redirect(url_for('showAboutMovie', platform=platform, title=title))
     else:
-        sql='select * from myList where title=? and platform=?'
-        editItem=db.execute(sql, (title,platform,)).fetchall()
+        sql = 'select * from myList where title=? and platform=?'
+        editItem = db.execute(sql, (title, platform,)).fetchall()
         db.close()
         return render_template('editList.html', Item=editItem, platform=platform, title=title)
-
 
 
 if __name__ == "__main__":
