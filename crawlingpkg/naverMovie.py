@@ -17,6 +17,8 @@ def getNaverMovieList():
     conn.executescript("""drop table if exists naver_movies;
     create table naver_movies(rank int, title text, genre text, rate real, price text, url text);
     """)
+    sql="delete from movies where platform_id=2"
+    conn.execute(sql)
 
     conn.commit()
     rank = 0
@@ -73,6 +75,9 @@ def getNaverMovieList():
             rank = rank+1
             conn.execute("insert into naver_movies values (?, ?, ?, ?, ?, ?)",
                          (rank, title, genre, rate, price, link_head+link))
+            
+            sql="insert into movies values (?, ?, ?, ?, ?, ?, ?, ?)"
+            conn.execute(sql, (title, 2, rank, genre, rate, price, link_head+link, 0))
             # print(
             #     f"title: {title} / price: {price} / rate: {rate} / link : {link_head+link} / genre : {genre}")
     print("naver_movie_list->DB done!!!")

@@ -42,6 +42,10 @@ def getGoogleMovieList():
     create table google_movies(rank int, title text, genre text, rate real, price text, url text);
     """)
 
+    conn.executescript("""delete from movies where platform_id=1;
+
+    """)
+
     conn.commit()
 
     # 스크래핑
@@ -75,6 +79,9 @@ def getGoogleMovieList():
         link_head = "https://play.google.com"
         conn.execute("insert into google_movies values (?, ?, ?, ?, ?, ?)",
                      (ranking, title, genre, rate, price, link_head+link))
+
+        sql="insert into movies values (?, ?, ?, ?, ?, ?, ?, ?)"
+        conn.execute(sql, (title, 1, ranking, genre, rate, price, link_head+link, 0))
 
     conn.commit()
     conn.close()
