@@ -6,6 +6,10 @@
     <title>test page</title>
 </head>
 <body>
+    <h3>
+        <a href={{url_for('search')}}>제목으로 검색하기</a>
+    </h3>
+
     <div style="width:350px; height:5000px; border:1px solid red; float:left;">
         <h4>google movie list</h4>
         <a href={{url_for('reset', platform=1)}}>새로고침</a>
