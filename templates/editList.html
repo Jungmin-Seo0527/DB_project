@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{{url_for('editList', Item=Item, platform=platform, title=title)}}"" method="POST">
+        <label for='id'>id</label>
+        <input id='id' type='int' name='id', value='{{Item[0].id}}'><br>
+
+        <label for='platform'>platform</label>
+        <input id='platform' type='int' name='platform', value='{{Item[0].platform}}'><br>
+
+        <label for='title'>title</label>
+        <input id='title' type='string' name='title', value='{{Item[0].title}}'><br>
+
+        <label for='myRate'>rate</label>
+        <input id='myRate' type='real' name='myRate', value='{{Item[0].myRate}}'><br>
+
+        <label for='comment'>comment</label>
+        <input id='comment' type='string' name='comment', value='{{Item[0].comment}}'><br>
+        
+        <input type='submit', value='Edit'>
+    </form>
+</body>
+</html>

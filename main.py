@@ -75,6 +75,7 @@ def search():
 
         sql = f'select * from naver_movies where (replace(title, " ", "") like replace("%{title}%", " ", ""))'
         naver_movies = db.execute(sql).fetchall()
+
         return render_template("showSearchedMovies.html", google_movies=google_movies, naver_movies=naver_movies)
 
     # get
@@ -89,8 +90,6 @@ def editMyList(title, platform):
 
     if request.method=='POST':
         sql="insert into myList values (?, ?, ?, ?, ?)"
-        print(request.form["comment"])
-
         db.execute(sql, (request.form['id'], request.form['platform'], request.form['title'], request.form['myRate'], request.form['comment']))
         db.commit()
         db.close()
@@ -99,9 +98,22 @@ def editMyList(title, platform):
         return render_template('editMyList.html', title=title, platform=platform)
         
 # show and edit myList
-@app.route("/showMyList/")
-def showMyList():
-    pass
+@app.route("/<int:platform><string:title>EditMyList/", methods=['GET', 'POST'])
+def editList(title, platform):
+    db=sqlite3.connect('movie.db')
+    db.row_factory=sqlite3.Row
+
+    if request.method=='POST':
+        sql='update myList set id=?, platform=?, title=?, myRate=?, comment=? where title=? and platform=?'
+        db.execute(sql, (request.form['id'], request.form['platform'], request.form['title'], request.form['myRate'], request.form['comment'], title, platform,))
+        db.commit()
+        db.close()
+        return redirect(url_for('showAboutMovie', platform=platform, title=title))
+    else:
+        sql='select * from myList where title=? and platform=?'
+        editItem=db.execute(sql, (title,platform,)).fetchall()
+        db.close()
+        return render_template('editList.html', Item=editItem, platform=platform, title=title)
 
 
 
