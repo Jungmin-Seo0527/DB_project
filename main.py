@@ -66,11 +66,12 @@ def search():
 
         google_movies = db.execute(sql, (1, )).fetchall()
         naver_movies = db.execute(sql, (2, )).fetchall()
-
+        db.close()
         return render_template("showSearchedMovies.html", google_movies=google_movies, naver_movies=naver_movies)
 
     # get
     else:
+        db.close()
         return render_template("searchMovie.html")
 
 
@@ -96,6 +97,7 @@ def editMyList(title, platform):
         sql = "select max(id) as m from myList"
         id = db.execute(sql).fetchall()
         id = id[0]['m']+1
+        db.close()
         return render_template('editMyList.html', title=title, platform=platform, id=id)
 
 
@@ -117,6 +119,24 @@ def editList(title, platform):
         editItem = db.execute(sql, (title, platform,)).fetchall()
         db.close()
         return render_template('editList.html', Item=editItem, platform=platform, title=title)
+
+
+# delete myList
+@app.route("/<int:platform>/<string:title>/<int:id>del/")
+def deleteMylist(platform, title, id):
+    db = sqlite3.connect("movie.db")
+    db.row_factory = sqlite3.Row
+
+    sql = 'update movies set list_id=? where list_id=?'
+    db.execute(sql, (0, id))
+
+    sql = 'delete from myList where id=?'
+    db.execute(sql, (id,))
+
+    db.commit()
+    db.close()
+
+    return redirect(url_for('showAboutMovie', platform=platform, title=title))
 
 
 if __name__ == "__main__":

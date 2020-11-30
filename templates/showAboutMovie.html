@@ -18,7 +18,9 @@
             <ul>
                 내 평점: {{myComment[0].myRate}}<br>
                 내 의견: {{myComment[0].comment}}<br>
-                <a href={{url_for('editList', platform=platform, title=myComment[0].title)}}>Edit</a>
+                <a href={{url_for('editList', platform=platform, title=myComment[0].title)}}>Edit</a><br>
+                <a href={{url_for('deleteMylist', platform=platform, title=myComment[0].title, id=myComment[0].id)}}>delete</a>
+
             </ul>
         {% else %}
             <a href={{url_for('editMyList', platform=platform, title=m.title)}}>내 리스트 추가</a>
