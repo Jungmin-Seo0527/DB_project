@@ -34,7 +34,7 @@ def reset(platform):
         getGoogleMovieList()
     else:
         getNaverMovieList()
-    return render_template("resetPage.html")
+    return redirect(url_for('mainpage'))
 
 
 # platform -> 1=google, 2=naver
@@ -73,9 +73,8 @@ def search():
     else:
         return render_template("searchMovie.html")
 
+
 # plus my list
-
-
 @app.route("/<int:platform><string:title>/editList/", methods=['GET', 'POST'])
 def editMyList(title, platform):
     db = sqlite3.connect('movie.db')
@@ -87,7 +86,7 @@ def editMyList(title, platform):
                          request.form['title'], request.form['myRate'], request.form['comment']))
 
         sql = "update movies set list_id=? where title=?"
-        db.execute(sql, (request.form['id'],request.form['title']))
+        db.execute(sql, (request.form['id'], request.form['title']))
 
         db.commit()
         db.close()
@@ -99,9 +98,8 @@ def editMyList(title, platform):
         id = id[0]['m']+1
         return render_template('editMyList.html', title=title, platform=platform, id=id)
 
+
 # show and edit myList
-
-
 @app.route("/<int:platform><string:title>EditMyList/", methods=['GET', 'POST'])
 def editList(title, platform):
     db = sqlite3.connect('movie.db')
