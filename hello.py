@@ -1,5 +1,5 @@
 # -*- coding: euc-kr -*-
-# °Ë»ö
+# ê²€ìƒ‰
 from flask import Flask, render_template
 import requests
 from bs4 import BeautifulStoneSoup
@@ -18,9 +18,9 @@ google_movies = db.execute(
     'select title from google_movies'
 ).fetchall()
 
-temp_title = "ÇØ¸®Æ÷ÅÍ"
+temp_title = "í•´ë¦¬í¬í„°"
 
-# ¶ç¾î¾²±â ¹èÁ¦ÇÏ°í
+# ë„ì–´ì“°ê¸° ë°°ì œí•˜ê³ 
 #sql=f'select title from naver_movies where (replace(title, " ", "") like "%{temp_title}%")'
 
 sql = f'select * from google_movies where (replace(title, " ", "") like replace("%{temp_title}%", " ", ""))'

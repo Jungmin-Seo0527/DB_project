@@ -21,7 +21,7 @@
                 제목: {{movie.title}}<br>
                 별점: {{movie.rate}}<br>
                 가격: {{movie.price}}<br>
-                <a href={{movie.url}}>바로가기</a><br>
+                <a href={{movie.url}} target="_blank">바로가기</a><br>
                 <a href={{url_for("showAboutMovie", platform=movie.platform_id, title=movie.title)}}>자세히 보기</a>
             </li>
             {% endfor %}
@@ -37,7 +37,7 @@
                 제목: {{movie.title}}<br>
                 별점: {{movie.rate}}<br>
                 가격: {{movie.price}}<br>
-                <a href={{movie.url}}>바로가기</a><br>
+                <a href={{movie.url}} target="_blank">바로가기</a><br>
                 <a href={{url_for("showAboutMovie", platform=movie.platform_id, title=movie.title)}}>자세히 보기</a>
             </li>
             {% endfor %}
