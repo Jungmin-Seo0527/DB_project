@@ -16,6 +16,7 @@
 ## 데이터베이스 스키마
 
 ## 기능 설명
+* [동영상 설명 링크(유투브)](https://www.youtube.com/watch?v=5TGL4s7E3EE)
 
 ### 1. 메인 화면
 
@@ -69,6 +70,16 @@
   ![](https://i.ibb.co/QfzGPtV/image.jpg)
     * 플랫폼별 랭킹, 별점, 가격 비교 가능
     * 원하는 플랫폼으로 바로가기 링크
+
+
+* 코코 검색후 정보 비교
+  ![](https://i.ibb.co/7X2v6s4/image.jpg)
+    * 네이버 승!!!
+
+
+* 라라랜드 검색후 정보 비교
+  ![](https://i.ibb.co/CHtBj5f/image.jpg)
+    * 네이버 승!!!
 
 ## 아쉬운점
 
